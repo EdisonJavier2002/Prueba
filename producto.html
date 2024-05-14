@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+<br>
+<body>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="conexion1.html">Página 1</a>
+        <a href="cone.html">Página 2</a>
+        <a href="producto.html">Página 3</a>
+    </nav>
+    <br>
+    
+    <h1>Insertar producto</h1>
+    <form action="INSERT">
+        <input type="text" id="nombre" placeholder="INSERTA EL NOMBRE DEL PRODUCTO">
+        <input type="text" id="precio" placeholder="INSERTA EL PRECIO DEL PRODUCTO">
+        <input type="text" id="descripcion" placeholder="INSERTA LA DESCRIPCIÓN DEL PRODUCTO">
+        <button type="submit">Agregar producto</button>
+    </form>
+    <script>
+        // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyC3tbQUZWyQxrh21A84nwKSX4-h05jqHTQ",
+  authDomain: "producto-dc917.firebaseapp.com",
+  projectId: "producto-dc917",
+  storageBucket: "producto-dc917.appspot.com",
+  messagingSenderId: "968864370754",
+  appId: "1:968864370754:web:36a062fb14a90660831ddb"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+import {getFirestore,collection,addDoc,onSnapshot,deleteDoc,doc}
+        from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    </script>
+    
+</body>
+</HTML>
