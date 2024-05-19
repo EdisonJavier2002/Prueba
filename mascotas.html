@@ -207,6 +207,7 @@
             }
         });
 
+
         window.onload = getMascotas;
 
     </script>
@@ -238,7 +239,7 @@
     <h2>Buscar Mascota</h2>
     <form id="buscarForm">
         <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
-        <button type="submit">Buscar</button>
+        <button type="submit" id="buscarBtn">Buscar</button>
     </form>
 
     <h2>Gestionar Mascota</h2>
@@ -252,9 +253,12 @@
         <input type="text" id="propietario" placeholder="Propietario" required>
         <input type="text" id="direccion_propietario" placeholder="Dirección del Propietario" required>
         <input type="tel" id="telefono_contacto" placeholder="Teléfono de Contacto" required>
-        <button id="insertarBtn" style="background-color: rgb(0, 255, 81);">Insertar</button>
-        <button id="editarBtn" style="background-color: rgb(46, 46, 255);">Actualizar</button>
-        <button id="borrarBtn" style="background-color: rgb(255, 52, 52);">Eliminar</button>
+        <button id="insertarBtn"
+            style="background-color: rgb(0, 255, 81); border-color:rgb(0, 255, 81) ;">Insertar</button>
+        <button id="editarBtn"
+            style="background-color: rgb(46, 133, 255); border-color: rgb(46, 133, 255);">Actualizar</button>
+        <button id="borrarBtn"
+            style="background-color: rgb(255, 52, 52); border-color: rgb(255, 52, 52);">Eliminar</button>
     </form>
 
     <h2>Lista de Mascotas</h2>
