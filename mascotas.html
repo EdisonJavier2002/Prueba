@@ -197,16 +197,6 @@
                 console.log("Please enter ID to search");
             }
         });
-        document.getElementById('buscarBtn').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('buscarId').value;
-            if (id) {
-                await searchMascotaById(id);
-            } else {
-                console.log("Please enter ID to search");
-            }
-        });
-
 
         window.onload = getMascotas;
 
@@ -239,7 +229,7 @@
     <h2>Buscar Mascota</h2>
     <form id="buscarForm">
         <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
-        <button type="submit" id="buscarBtn">Buscar</button>
+        <button type="submit">Buscar</button>
     </form>
 
     <h2>Gestionar Mascota</h2>
