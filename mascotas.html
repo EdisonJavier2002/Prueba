@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase CRUD</title>
+    <script type="module">
+        // Importa las funciones que necesitas de los SDKs que necesites
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+
+        // Tu configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD73Mp6G2pi_pWS66rvaINg30d-n5ArP9c",
+            authDomain: "mascotascrud.firebaseapp.com",
+            projectId: "mascotascrud",
+            storageBucket: "mascotascrud.appspot.com",
+            messagingSenderId: "1060241153",
+            appId: "1:1060241153:web:84ecde2965957fa39ee500",
+            measurementId: "G-T0EXQLHXFH"
+
+        };
+
+        // Inicializa Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Referencia a la colección "mascotas"
+        const mascotasCollection = collection(db, "mascotas");
+
+        // Crear Mascota
+        async function createMascota(data) {
+            try {
+                const docRef = await addDoc(mascotasCollection, data);
+                console.log("Document written with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        }
+
+        document.getElementById('mascotaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                nombre: document.getElementById('nombre').value,
+                especie: document.getElementById('especie').value,
+                raza: document.getElementById('raza').value,
+                edad: document.getElementById('edad').value,
+                peso: document.getElementById('peso').value,
+                fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
+                propietario: document.getElementById('propietario').value,
+                direccion_propietario: document.getElementById('direccion_propietario').value,
+                telefono_contacto: document.getElementById('telefono_contacto').value
+            };
+            await createMascota(data);
+        });
+
+        // Leer Mascotas
+        async function getMascotas() {
+            const querySnapshot = await getDocs(mascotasCollection);
+            const listaMascotas = document.getElementById('listaMascotas');
+            listaMascotas.innerHTML = '';
+            querySnapshot.forEach((doc) => {
+                const li = document.createElement('li');
+                li.textContent = `${doc.id} => ${JSON.stringify(doc.data())}`;
+                listaMascotas.appendChild(li);
+            });
+        }
+
+        document.getElementById('leerMascotas').addEventListener('click', getMascotas);
+
+        // Actualizar Mascota
+        async function updateMascota(id, updatedData) {
+            const mascotaDoc = doc(db, "mascotas", id);
+            await updateDoc(mascotaDoc, updatedData);
+            console.log("Document updated with ID: ", id);
+        }
+
+        document.getElementById('actualizarForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('actualizarId').value;
+            const updatedData = {};
+            if (document.getElementById('actualizarNombre').value) {
+                updatedData.nombre = document.getElementById('actualizarNombre').value;
+            }
+            if (document.getElementById('actualizarEdad').value) {
+                updatedData.edad = parseInt(document.getElementById('actualizarEdad').value);
+            }
+            await updateMascota(id, updatedData);
+        });
+
+        // Eliminar Mascota
+        async function deleteMascota(id) {
+            const mascotaDoc = doc(db, "mascotas", id);
+            await deleteDoc(mascotaDoc);
+            console.log("Document deleted with ID: ", id);
+        }
+
+        document.getElementById('eliminarForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('eliminarId').value;
+            await deleteMascota(id);
+        });
+    </script>
+</head>
+
+<body>
+    <a href="index.html">INICIO</a>
+    &nbsp;&nbsp;
+    <a href="informacion.html">INFORMACIÓN</a>
+    &nbsp;&nbsp;
+    <a href="acercade.html">ACERCA DE</a>
+    &nbsp;&nbsp;
+    <a href="adrian.html">INFORMACIÓN ADRIAN</a>
+    &nbsp;&nbsp;
+    <a href="edison.html">INFORMACIÓN EDISON</a>
+    <br>
+    &nbsp;&nbsp;
+    <a href="producto.html">PRODUCTO</a>
+    <br>
+    &nbsp;&nbsp;
+    <a href="mascotas.html">MASCOTAS</a>
+    <br>
+
+    <h1>Firebase CRUD</h1>
+
+    <!-- Formulario para crear mascota -->
+    <h2>Crear Mascota</h2>
+    <form id="mascotaForm">
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="text" id="especie" placeholder="Especie" required>
+        <input type="text" id="raza" placeholder="Raza" required>
+        <input type="number" id="edad" placeholder="Edad" required>
+        <input type="number" id="peso" placeholder="Peso" required>
+        <input type="date" id="fecha_nacimiento" placeholder="Fecha de Nacimiento" required>
+        <input type="text" id="propietario" placeholder="Propietario" required>
+        <input type="text" id="direccion_propietario" placeholder="Dirección del Propietario" required>
+        <input type="tel" id="telefono_contacto" placeholder="Teléfono de Contacto" required>
+        <button type="submit">Crear Mascota</button>
+    </form>
+
+    <!-- Botón para leer mascotas -->
+    <h2>Leer Mascotas</h2>
+    <button id="leerMascotas">Leer Mascotas</button>
+    <ul id="listaMascotas"></ul>
+
+    <!-- Formulario para actualizar mascota -->
+    <h2>Actualizar Mascota</h2>
+    <form id="actualizarForm">
+        <input type="text" id="actualizarId" placeholder="ID de la Mascota" required>
+        <input type="text" id="actualizarNombre" placeholder="Nuevo Nombre">
+        <input type="number" id="actualizarEdad" placeholder="Nueva Edad">
+        <button type="submit">Actualizar Mascota</button>
+    </form>
+
+    <!-- Formulario para eliminar mascota -->
+    <h2>Eliminar Mascota</h2>
+    <form id="eliminarForm">
+        <input type="text" id="eliminarId" placeholder="ID de la Mascota" required>
+        <button type="submit">Eliminar Mascota</button>
+    </form>
+</body>
+
+</html>
