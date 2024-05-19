@@ -246,9 +246,7 @@
         <a href="acercade.html">ACERCA DE</a>
         <a href="adrian.html">INFORMACIÓN ADRIAN</a>
         <a href="edison.html">INFORMACIÓN EDISON</a>
-        <br>
         <a href="producto.html">PRODUCTO</a>
-        <br>
         <a href="mascotas.html">MASCOTAS</a>
     </div>
     
@@ -260,19 +258,28 @@
     <h2 class="h2textos">Buscar Mascota</h2>
     <form id="buscarForm">
         <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
-        <button type="submit" id="buscarBtn">Buscar</button>
+        <button type="submit" id="buscarBtn" style="background-color: rgb(253, 255, 159); border-color:rgb(253, 255, 159) ; border-radius: 40px;">Buscar</button>
     </form>
 
     <h2 class="h2textos">Gestionar Mascota</h2>
     <form id="mascotaForm">
+        <label for="">Nombre:</label>
         <input type="text" id="nombre" placeholder="Nombre" required>
+        <label for="">Especie:</label>
         <input type="text" id="especie" placeholder="Especie" required>
+        <label for="">Raza:</label>
         <input type="text" id="raza" placeholder="Raza" required>
+        <label for="">Edad:</label>
         <input type="number" id="edad" placeholder="Edad" required>
+        <label for="">Peso:</label>
         <input type="number" id="peso" placeholder="Peso" required>
+        <label for="">Fecha nacimiento:</label>
         <input type="date" id="fecha_nacimiento" placeholder="Fecha de Nacimiento" required>
+        <label for="">Propietario:</label>
         <input type="text" id="propietario" placeholder="Propietario" required>
+        <label for="">Dirección propietario:</label>
         <input type="text" id="direccion_propietario" placeholder="Dirección del Propietario" required>
+        <label for="">Teléfono contacto:</label>
         <input type="tel" id="telefono_contacto" placeholder="Teléfono de Contacto" required>
         <button id="insertarBtn"
             style="background-color: rgb(0, 255, 81); border-color:rgb(0, 255, 81) ; border-radius: 40px;">Insertar</button>
