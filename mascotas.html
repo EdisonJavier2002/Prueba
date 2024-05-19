@@ -69,28 +69,40 @@
         async function searchMascotaByName(nombre) {
             const q = query(mascotasCollection, where("nombre", "==", nombre));
             const querySnapshot = await getDocs(q);
-            const listaMascotas = document.getElementById('listaMascotas');
-            listaMascotas.innerHTML = '';
-            querySnapshot.forEach((doc) => {
-                const li = document.createElement('li');
-                li.textContent = `${doc.id} => ${JSON.stringify(doc.data())}`;
-                listaMascotas.appendChild(li);
-            });
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach((doc) => {
+                    fillFormWithMascotaData(doc.id, doc.data());
+                });
+            } else {
+                console.log("No such document!");
+                document.getElementById('mascotaForm').reset();
+            }
         }
 
         // Buscar Mascota por ID
         async function searchMascotaById(id) {
             const mascotaDoc = doc(mascotasCollection, id);
             const docSnap = await getDoc(mascotaDoc);
-            const listaMascotas = document.getElementById('listaMascotas');
-            listaMascotas.innerHTML = '';
             if (docSnap.exists()) {
-                const li = document.createElement('li');
-                li.textContent = `${docSnap.id} => ${JSON.stringify(docSnap.data())}`;
-                listaMascotas.appendChild(li);
+                fillFormWithMascotaData(docSnap.id, docSnap.data());
             } else {
                 console.log("No such document!");
+                document.getElementById('mascotaForm').reset();
             }
+        }
+
+        // Llenar formulario con datos de la mascota
+        function fillFormWithMascotaData(id, data) {
+            document.getElementById('buscarId').value = id;
+            document.getElementById('nombre').value = data.nombre;
+            document.getElementById('especie').value = data.especie;
+            document.getElementById('raza').value = data.raza;
+            document.getElementById('edad').value = data.edad;
+            document.getElementById('peso').value = data.peso;
+            document.getElementById('fecha_nacimiento').value = data.fecha_nacimiento;
+            document.getElementById('propietario').value = data.propietario;
+            document.getElementById('direccion_propietario').value = data.direccion_propietario;
+            document.getElementById('telefono_contacto').value = data.telefono_contacto;
         }
 
         // Eventos para los formularios y botones
@@ -152,6 +164,7 @@
                 console.log("Please enter either ID or Nombre to search");
             }
         });
+
         // Cargar todas las mascotas al inicio
         window.onload = getMascotas;
 
