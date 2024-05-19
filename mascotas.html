@@ -65,20 +65,6 @@
             });
         }
 
-        // Buscar Mascota por nombre
-        async function searchMascotaByName(nombre) {
-            const q = query(mascotasCollection, where("nombre", "==", nombre));
-            const querySnapshot = await getDocs(q);
-            if (!querySnapshot.empty) {
-                querySnapshot.forEach((doc) => {
-                    fillFormWithMascotaData(doc.id, doc.data());
-                });
-            } else {
-                console.log("No such document!");
-                document.getElementById('mascotaForm').reset();
-            }
-        }
-
         // Buscar Mascota por ID
         async function searchMascotaById(id) {
             const mascotaDoc = doc(mascotasCollection, id);
@@ -154,14 +140,11 @@
         document.getElementById('buscarForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('buscarId').value;
-            const nombre = document.getElementById('buscarNombre').value;
 
             if (id) {
                 await searchMascotaById(id);
-            } else if (nombre) {
-                await searchMascotaByName(nombre);
             } else {
-                console.log("Please enter either ID or Nombre to search");
+                console.log("Please enter ID to search");
             }
         });
 
@@ -196,8 +179,7 @@
     <!-- Formulario de búsqueda -->
     <h2>Buscar Mascota</h2>
     <form id="buscarForm">
-        <input type="text" id="buscarId" placeholder="ID de la Mascota">
-        <input type="text" id="buscarNombre" placeholder="Nombre de la Mascota">
+        <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
         <button type="submit">Buscar</button>
     </form>
 
