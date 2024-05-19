@@ -5,6 +5,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase CRUD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
     <script type="module">
         // Importa las funciones que necesitas de los SDKs que necesites
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
@@ -34,38 +74,50 @@
             try {
                 const docRef = await addDoc(mascotasCollection, data);
                 console.log("Document written with ID: ", docRef.id);
+                await getMascotas();
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
         }
 
-        // Actualizar Mascota
         async function updateMascota(id, updatedData) {
             const mascotaDoc = doc(db, "mascotas", id);
             await updateDoc(mascotaDoc, updatedData);
             console.log("Document updated with ID: ", id);
+            await getMascotas();
         }
 
-        // Eliminar Mascota
         async function deleteMascota(id) {
             const mascotaDoc = doc(db, "mascotas", id);
             await deleteDoc(mascotaDoc);
             console.log("Document deleted with ID: ", id);
+            await getMascotas();
         }
 
-        // Leer Mascotas
         async function getMascotas() {
             const querySnapshot = await getDocs(mascotasCollection);
-            const listaMascotas = document.getElementById('listaMascotas');
-            listaMascotas.innerHTML = '';
+            const tableBody = document.getElementById('tablaMascotasBody');
+            tableBody.innerHTML = '';
             querySnapshot.forEach((doc) => {
-                const li = document.createElement('li');
-                li.textContent = `${doc.id} => ${JSON.stringify(doc.data())}`;
-                listaMascotas.appendChild(li);
+                const data = doc.data();
+                const row = `
+                    <tr>
+                        <td>${doc.id}</td>
+                        <td>${data.nombre}</td>
+                        <td>${data.especie}</td>
+                        <td>${data.raza}</td>
+                        <td>${data.edad}</td>
+                        <td>${data.peso}</td>
+                        <td>${data.fecha_nacimiento}</td>
+                        <td>${data.propietario}</td>
+                        <td>${data.direccion_propietario}</td>
+                        <td>${data.telefono_contacto}</td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', row);
             });
         }
 
-        // Buscar Mascota por ID
         async function searchMascotaById(id) {
             const mascotaDoc = doc(mascotasCollection, id);
             const docSnap = await getDoc(mascotaDoc);
@@ -77,7 +129,6 @@
             }
         }
 
-        // Llenar formulario con datos de la mascota
         function fillFormWithMascotaData(id, data) {
             document.getElementById('buscarId').value = id;
             document.getElementById('nombre').value = data.nombre;
@@ -91,7 +142,6 @@
             document.getElementById('telefono_contacto').value = data.telefono_contacto;
         }
 
-        // Eventos para los formularios y botones
         document.getElementById('insertarBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const data = {
@@ -107,7 +157,6 @@
             };
             await createMascota(data);
             document.getElementById('mascotaForm').reset();
-            await getMascotas();
         });
 
         document.getElementById('editarBtn').addEventListener('click', async (e) => {
@@ -126,7 +175,6 @@
             };
             await updateMascota(id, updatedData);
             document.getElementById('mascotaForm').reset();
-            await getMascotas();
         });
 
         document.getElementById('borrarBtn').addEventListener('click', async (e) => {
@@ -134,13 +182,11 @@
             const id = document.getElementById('buscarId').value;
             await deleteMascota(id);
             document.getElementById('mascotaForm').reset();
-            await getMascotas();
         });
 
         document.getElementById('buscarForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('buscarId').value;
-
             if (id) {
                 await searchMascotaById(id);
             } else {
@@ -148,7 +194,6 @@
             }
         });
 
-        // Cargar todas las mascotas al inicio
         window.onload = getMascotas;
 
     </script>
@@ -183,7 +228,6 @@
         <button type="submit">Buscar</button>
     </form>
 
-    <!-- Formulario para crear, actualizar y eliminar mascota -->
     <h2>Gestionar Mascota</h2>
     <form id="mascotaForm">
         <input type="text" id="nombre" placeholder="Nombre" required>
@@ -200,9 +244,24 @@
         <button id="borrarBtn">Borrar</button>
     </form>
 
-    <!-- Lista de mascotas -->
     <h2>Lista de Mascotas</h2>
-    <ul id="listaMascotas"></ul>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Especie</th>
+                <th>Raza</th>
+                <th>Edad</th>
+                <th>Peso</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Propietario</th>
+                <th>Dirección del Propietario</th>
+                <th>Teléfono de Contacto</th>
+            </tr>
+        </thead>
+        <tbody id="tablaMascotasBody"></tbody>
+    </table>
 
 </body>
 
