@@ -52,7 +52,7 @@
     <script type="module">
         // Importa las funciones que necesitas de los SDKs que necesites
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
 
         // Tu configuración de Firebase
         const firebaseConfig = {
@@ -188,7 +188,7 @@
             document.getElementById('mascotaForm').reset();
         });
 
-        document.getElementById('buscarForm').addEventListener('submit', async (e) => {
+        document.getElementById('buscarBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const id = document.getElementById('buscarId').value;
             if (id) {
@@ -229,7 +229,7 @@
     <h2>Buscar Mascota</h2>
     <form id="buscarForm">
         <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
-        <button type="submit">Buscar</button>
+        <button type="submit" id="buscarBtn">Buscar</button>
     </form>
 
     <h2>Gestionar Mascota</h2>
