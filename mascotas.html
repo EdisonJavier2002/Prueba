@@ -203,36 +203,60 @@
     </script>
 </head>
 
-<body>
-    <div style="background-color: aqua;">
+<body style="background-image: url(https://img.freepik.com/vector-gratis/marco-perros-sobre-fondo-blanco_53876-99295.jpg);">
+    <style>
+        /* Estilos para el contenedor */
+        .menu-container {
+            background-color: aqua;
+            padding: 10px; /* Ajusta el espacio alrededor del contenido */
+            border-radius: 10px; /* Añade bordes redondeados al contenedor */
+            margin-bottom: 20px; /* Espacio entre el menú y el contenido siguiente */
+        }
+    
+        /* Estilos para los enlaces */
+        .menu-container a {
+            text-decoration: none; /* Elimina el subrayado predeterminado de los enlaces */
+            color: navy; /* Cambia el color del texto de los enlaces */
+            margin-right: 10px; /* Espacio entre los enlaces */
+            font-weight: bold; /* Hace que el texto de los enlaces sea más grueso */
+        }
+    
+        /* Estilos para los enlaces al pasar el ratón sobre ellos */
+        .menu-container a:hover {
+            color: darkblue; /* Cambia el color del texto al pasar el ratón sobre los enlaces */
+        }
+        .h2textos{
+            color: #fff; 
+            background-color: #007bff; 
+            padding: 10px; 
+            text-align: center; 
+            border-radius: 5px;
+        }
+    </style>
+    
+    <div class="menu-container">
         <a href="index.html">INICIO</a>
-        &nbsp;&nbsp;
         <a href="informacion.html">INFORMACIÓN</a>
-        &nbsp;&nbsp;
         <a href="acercade.html">ACERCA DE</a>
-        &nbsp;&nbsp;
         <a href="adrian.html">INFORMACIÓN ADRIAN</a>
-        &nbsp;&nbsp;
         <a href="edison.html">INFORMACIÓN EDISON</a>
         <br>
-        &nbsp;&nbsp;
         <a href="producto.html">PRODUCTO</a>
         <br>
-        &nbsp;&nbsp;
         <a href="mascotas.html">MASCOTAS</a>
-        <br>
     </div>
+    
 
     <h1 style="background-color: aqua;">MASCOTAS CRUD</h1>
 
     <!-- Formulario de búsqueda -->
-    <h2>Buscar Mascota</h2>
+    <h2 class="h2textos">Buscar Mascota</h2>
     <form id="buscarForm">
         <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
         <button type="submit" id="buscarBtn">Buscar</button>
     </form>
 
-    <h2>Gestionar Mascota</h2>
+    <h2 class="h2textos">Gestionar Mascota</h2>
     <form id="mascotaForm">
         <input type="text" id="nombre" placeholder="Nombre" required>
         <input type="text" id="especie" placeholder="Especie" required>
@@ -244,14 +268,14 @@
         <input type="text" id="direccion_propietario" placeholder="Dirección del Propietario" required>
         <input type="tel" id="telefono_contacto" placeholder="Teléfono de Contacto" required>
         <button id="insertarBtn"
-            style="background-color: rgb(0, 255, 81); border-color:rgb(0, 255, 81) ;">Insertar</button>
+            style="background-color: rgb(0, 255, 81); border-color:rgb(0, 255, 81) ; border-radius: 40px;">Insertar</button>
         <button id="editarBtn"
-            style="background-color: rgb(46, 133, 255); border-color: rgb(46, 133, 255);">Actualizar</button>
+            style="background-color: rgb(46, 133, 255); border-color: rgb(46, 133, 255); border-radius: 40px;">Actualizar</button>
         <button id="borrarBtn"
-            style="background-color: rgb(255, 52, 52); border-color: rgb(255, 52, 52);">Eliminar</button>
+            style="background-color: rgb(255, 52, 52); border-color: rgb(255, 52, 52); border-radius: 40px;">Eliminar</button>
     </form>
 
-    <h2>Lista de Mascotas</h2>
+    <h2 class="h2textos">Lista de Mascotas</h2>
     <table>
         <thead>
             <tr>
