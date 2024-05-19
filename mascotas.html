@@ -16,7 +16,8 @@
             margin-bottom: 20px;
         }
 
-        input, button {
+        input,
+        button {
             margin: 5px 0;
             padding: 10px;
             font-size: 16px;
@@ -32,11 +33,14 @@
             margin-top: 20px;
         }
 
-        table, th, td {
+        table,
+        th,
+        td {
             border: 1px solid black;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
         }
@@ -193,6 +197,15 @@
                 console.log("Please enter ID to search");
             }
         });
+        document.getElementById('buscarBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('buscarId').value;
+            if (id) {
+                await searchMascotaById(id);
+            } else {
+                console.log("Please enter ID to search");
+            }
+        });
 
         window.onload = getMascotas;
 
@@ -239,9 +252,9 @@
         <input type="text" id="propietario" placeholder="Propietario" required>
         <input type="text" id="direccion_propietario" placeholder="Dirección del Propietario" required>
         <input type="tel" id="telefono_contacto" placeholder="Teléfono de Contacto" required>
-        <button id="insertarBtn">Insertar</button>
-        <button id="editarBtn">Editar</button>
-        <button id="borrarBtn">Borrar</button>
+        <button id="insertarBtn" style="background-color: rgb(0, 255, 81);">Insertar</button>
+        <button id="editarBtn" style="background-color: rgb(46, 46, 255);">Actualizar</button>
+        <button id="borrarBtn" style="background-color: rgb(255, 52, 52);">Eliminar</button>
     </form>
 
     <h2>Lista de Mascotas</h2>
