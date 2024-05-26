@@ -52,7 +52,7 @@
     <script type="module">
         // Importa las funciones que necesitas de los SDKs que necesites
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
 
         // Tu configuración de Firebase
         const firebaseConfig = {
@@ -105,7 +105,7 @@
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
                 const row = `
-                    <tr>
+                    <tr id="${doc.id}" onclick="fillFormWithMascotaData(this)">
                         <td>${doc.id}</td>
                         <td>${data.nombre}</td>
                         <td>${data.especie}</td>
@@ -133,17 +133,18 @@
             }
         }
 
-        function fillFormWithMascotaData(id, data) {
-            document.getElementById('buscarId').value = id;
-            document.getElementById('nombre').value = data.nombre;
-            document.getElementById('especie').value = data.especie;
-            document.getElementById('raza').value = data.raza;
-            document.getElementById('edad').value = data.edad;
-            document.getElementById('peso').value = data.peso;
-            document.getElementById('fecha_nacimiento').value = data.fecha_nacimiento;
-            document.getElementById('propietario').value = data.propietario;
-            document.getElementById('direccion_propietario').value = data.direccion_propietario;
-            document.getElementById('telefono_contacto').value = data.telefono_contacto;
+        function fillFormWithMascotaData(row) {
+            const cells = row.getElementsByTagName("td");
+            document.getElementById('buscarId').value = row.id;
+            document.getElementById('nombre').value = cells[1].innerText;
+            document.getElementById('especie').value = cells[2].innerText;
+            document.getElementById('raza').value = cells[3].innerText;
+            document.getElementById('edad').value = cells[4].innerText;
+            document.getElementById('peso').value = cells[5].innerText;
+            document.getElementById('fecha_nacimiento').value = cells[6].innerText;
+            document.getElementById('propietario').value = cells[7].innerText;
+            document.getElementById('direccion_propietario').value = cells[8].innerText;
+            document.getElementById('telefono_contacto').value = cells[9].innerText;
         }
 
         document.getElementById('insertarBtn').addEventListener('click', async (e) => {
@@ -208,38 +209,49 @@
         /* Estilos para el contenedor */
         .menu-container {
             background-color: #007bff;
-            padding: 10px; /* Ajusta el espacio alrededor del contenido */
-            border-radius: 10px; /* Añade bordes redondeados al contenedor */
-            margin-bottom: 20px; /* Espacio entre el menú y el contenido siguiente */
+            padding: 10px;
+            /* Ajusta el espacio alrededor del contenido */
+            border-radius: 10px;
+            /* Añade bordes redondeados al contenedor */
+            margin-bottom: 20px;
+            /* Espacio entre el menú y el contenido siguiente */
         }
-    
+
         /* Estilos para los enlaces */
         .menu-container a {
-            text-decoration: none; /* Elimina el subrayado predeterminado de los enlaces */
-            color: rgb(0, 0, 0); /* Cambia el color del texto de los enlaces */
-            margin-right: 10px; /* Espacio entre los enlaces */
-            font-weight: bold; /* Hace que el texto de los enlaces sea más grueso */
+            text-decoration: none;
+            /* Elimina el subrayado predeterminado de los enlaces */
+            color: rgb(0, 0, 0);
+            /* Cambia el color del texto de los enlaces */
+            margin-right: 10px;
+            /* Espacio entre los enlaces */
+            font-weight: bold;
+            /* Hace que el texto de los enlaces sea más grueso */
         }
-    
+
         /* Estilos para los enlaces al pasar el ratón sobre ellos */
         .menu-container a:hover {
-            color: rgb(255, 255, 255); /* Cambia el color del texto al pasar el ratón sobre los enlaces */
+            color: rgb(255, 255, 255);
+            /* Cambia el color del texto al pasar el ratón sobre los enlaces */
         }
-        .h2textos{
-            color: #fff; 
-            background-color: #007bff; 
-            padding: 10px; 
-            text-align: center; 
+
+        .h2textos {
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px;
+            text-align: center;
             border-radius: 5px;
-        }.h1txt{
-            color: #000000; 
-            background-color: #00e5ff; 
-            padding: 10px; 
-            text-align: center; 
+        }
+
+        .h1txt {
+            color: #000000;
+            background-color: #00e5ff;
+            padding: 10px;
+            text-align: center;
             border-radius: 5px;
         }
     </style>
-    
+
     <div class="menu-container">
         <a href="index.html">INICIO</a>
         <a href="informacion.html">INFORMACIÓN</a>
@@ -249,20 +261,22 @@
         <a href="producto.html">PRODUCTO</a>
         <a href="mascotas.html">MASCOTAS</a>
     </div>
-    
+
 
     <h1 class="h1txt">MASCOTAS CRUD</h1>
-    <img style="width: 100%; height: auto;" src="https://colombiavisible.com/wp-content/uploads/2022/08/Portada-hogar-de-paso-1024x312.jpg" alt="">
+    <img style="width: 100%; height: auto;"
+        src="https://colombiavisible.com/wp-content/uploads/2022/08/Portada-hogar-de-paso-1024x312.jpg" alt="">
 
     <!-- Formulario de búsqueda -->
     <h2 class="h2textos">Buscar Mascota</h2>
     <form id="buscarForm">
         <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
-        <button type="submit" id="buscarBtn" style="background-color: rgb(253, 255, 159); border-color:rgb(253, 255, 159) ; border-radius: 40px;">Buscar</button>
+        <button type="submit" id="buscarBtn"
+            style="background-color: rgb(253, 255, 159); border-color:rgb(253, 255, 159) ; border-radius: 40px;">Buscar</button>
     </form>
 
     <h2 class="h2textos">Gestionar Mascota</h2>
-    <form id="mascotaForm" >
+    <form id="mascotaForm">
         <input type="text" id="nombre" placeholder="Nombre" required>
         <input type="text" id="especie" placeholder="Especie" required>
         <input type="text" id="raza" placeholder="Raza" required>
