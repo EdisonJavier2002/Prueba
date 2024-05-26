@@ -196,14 +196,9 @@
             document.getElementById('mascotaForm').reset();
         });
 
-        document.getElementById('buscarBtn').addEventListener('click', async (e) => {
+        document.getElementById('limpiarBtn').addEventListener('click', (e) => {
             e.preventDefault();
-            const id = document.getElementById('buscarId').value;
-            if (id) {
-                await searchMascotaById(id);
-            } else {
-                console.log("Please enter ID to search");
-            }
+            document.getElementById('mascotaForm').reset();
         });
 
         window.onload = getMascotas;
@@ -275,12 +270,9 @@
         src="https://colombiavisible.com/wp-content/uploads/2022/08/Portada-hogar-de-paso-1024x312.jpg" alt="">
 
     <!-- Formulario de búsqueda -->
-    <h2 class="h2textos">Buscar Mascota</h2>
-    <form id="buscarForm">
-        <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
-        <button type="submit" id="buscarBtn"
-            style="background-color: rgb(253, 255, 159); border-color:rgb(253, 255, 159) ; border-radius: 40px;">Buscar</button>
-    </form>
+    <button type="button" id="limpiarBtn"
+        style="background-color: rgb(253, 255, 159); border-color:rgb(253, 255, 159) ; border-radius: 40px;">Limpiar
+        campos</button>
 
     <h2 class="h2textos">Gestionar Mascota</h2>
     <form id="mascotaForm">
