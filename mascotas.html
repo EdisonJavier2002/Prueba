@@ -86,9 +86,9 @@
     </style>
     <script type="module">
         // Importa las funciones que necesitas de los SDKs que necesites
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
         // Tu configuración de Firebase
         const firebaseConfig = {
@@ -132,6 +132,7 @@
                 console.log("Usuario registrado:", userCredential.user);
             } catch (error) {
                 console.error("Error al registrar:", error);
+                alert("Error al registrar: " + error.message);
             }
         }
 
@@ -144,6 +145,7 @@
                 console.log("Usuario logueado:", userCredential.user);
             } catch (error) {
                 console.error("Error al iniciar sesión:", error);
+                alert("Error al iniciar sesión: " + error.message);
             }
         }
 
@@ -154,6 +156,7 @@
                 console.log("Usuario desconectado");
             } catch (error) {
                 console.error("Error al cerrar sesión:", error);
+                alert("Error al cerrar sesión: " + error.message);
             }
         }
 
@@ -246,79 +249,97 @@
                 direccion_propietario: document.getElementById('direccion_propietario').value,
                 telefono_contacto: document.getElementById('telefono_contacto').value
             };
-            const id = document.getElementById('buscarId').value;
-            if (id) {
-                await updateMascota(id, data);
-            } else {
-                await createMascota(data);
-            }
-            document.getElementById('mascotaForm').reset();
+            await createMascota(data);
         });
 
-        document.getElementById('leerBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            getMascotas();
-        });
-
-        document.getElementById('buscarBtn').addEventListener('click', async (e) => {
+        document.getElementById('buscarIdBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const id = document.getElementById('buscarId').value;
             await searchMascotaById(id);
+        });
+
+        document.getElementById('actualizarBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('buscarId').value;
+            const updatedData = {
+                nombre: document.getElementById('nombre').value,
+                especie: document.getElementById('especie').value,
+                raza: document.getElementById('raza').value,
+                edad: document.getElementById('edad').value,
+                peso: document.getElementById('peso').value,
+                fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
+                propietario: document.getElementById('propietario').value,
+                direccion_propietario: document.getElementById('direccion_propietario').value,
+                telefono_contacto: document.getElementById('telefono_contacto').value
+            };
+            await updateMascota(id, updatedData);
         });
 
         document.getElementById('eliminarBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const id = document.getElementById('buscarId').value;
             await deleteMascota(id);
-            document.getElementById('mascotaForm').reset();
         });
+
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            await logout();
+        });
+
     </script>
 </head>
 
 <body>
     <div class="menu-container">
-        <a href="#" id="registroEnlace">Registro</a>
-        <a href="#" id="loginEnlace">Login</a>
-        <a href="#" id="logoutEnlace">Logout</a>
+        <a href="#">Inicio</a>
+        <a href="#">Servicios</a>
+        <a href="#">Contacto</a>
+        <a href="#">Acerca de</a>
+        <a id="logoutBtn" href="#" style="display:none;">Cerrar Sesión</a>
     </div>
-
-    <h1 class="h1txt">Aplicación CRUD de Mascotas con Firebase</h1>
-
+    <h1 class="h1txt">Módulo de Gestión de Mascotas</h1>
     <div id="loginSection">
-        <h2 class="h2textos">Formulario de Registro</h2>
-        <form id="registroForm">
+        <h2 class="h2textos">Registro de Usuarios</h2>
+        <form id="registerForm">
             <input type="email" id="registerEmail" placeholder="Email" required>
-            <input type="password" id="registerPassword" placeholder="Contraseña" required>
-            <button type="button" id="registerBtn" onclick="register()">Registrar</button>
+            <input type="password" id="registerPassword" placeholder="Password" required>
+            <button type="button" onclick="register()">Registrarse</button>
         </form>
-
-        <h2 class="h2textos">Formulario de Login</h2>
+        <h2 class="h2textos">Inicio de Sesión</h2>
         <form id="loginForm">
             <input type="email" id="loginEmail" placeholder="Email" required>
-            <input type="password" id="loginPassword" placeholder="Contraseña" required>
-            <button type="button" id="loginBtn" onclick="login()">Login</button>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="button" onclick="login()">Iniciar Sesión</button>
         </form>
     </div>
-
-    <div id="mascotaSection" style="display: none;">
-        <h2 class="h2textos">Formulario de Mascotas</h2>
+    <div id="mascotaSection" style="display:none;">
+        <h2 class="h2textos">CRUD de Mascotas</h2>
         <form id="mascotaForm">
-            <input type="text" id="buscarId" placeholder="ID de la mascota (solo para actualizar o eliminar)">
-            <input type="text" id="nombre" placeholder="Nombre de la mascota" required>
-            <input type="text" id="especie" placeholder="Especie" required>
-            <input type="text" id="raza" placeholder="Raza" required>
-            <input type="number" id="edad" placeholder="Edad" required>
-            <input type="number" id="peso" placeholder="Peso (kg)" required>
-            <input type="date" id="fecha_nacimiento" placeholder="Fecha de Nacimiento" required>
-            <input type="text" id="propietario" placeholder="Nombre del propietario" required>
-            <input type="text" id="direccion_propietario" placeholder="Dirección del propietario" required>
-            <input type="text" id="telefono_contacto" placeholder="Teléfono de contacto" required>
-            <button type="button" id="insertarBtn">Insertar/Actualizar Mascota</button>
-            <button type="button" id="leerBtn">Leer Mascotas</button>
-            <button type="button" id="buscarBtn">Buscar Mascota por ID</button>
+            <input type="hidden" id="buscarId">
+            <label for="nombre">Nombre:</label><br>
+            <input type="text" id="nombre" required><br>
+            <label for="especie">Especie:</label><br>
+            <input type="text" id="especie" required><br>
+            <label for="raza">Raza:</label><br>
+            <input type="text" id="raza" required><br>
+            <label for="edad">Edad:</label><br>
+            <input type="number" id="edad" required><br>
+            <label for="peso">Peso:</label><br>
+            <input type="number" id="peso" required><br>
+            <label for="fecha_nacimiento">Fecha de Nacimiento:</label><br>
+            <input type="date" id="fecha_nacimiento" required><br>
+            <label for="propietario">Propietario:</label><br>
+            <input type="text" id="propietario" required><br>
+            <label for="direccion_propietario">Dirección del Propietario:</label><br>
+            <input type="text" id="direccion_propietario" required><br>
+            <label for="telefono_contacto">Teléfono de Contacto:</label><br>
+            <input type="tel" id="telefono_contacto" required><br>
+            <button type="button" id="insertarBtn">Insertar Mascota</button>
+            <button type="button" id="buscarIdBtn">Buscar por ID</button>
+            <button type="button" id="actualizarBtn">Actualizar Mascota</button>
             <button type="button" id="eliminarBtn">Eliminar Mascota</button>
         </form>
-
+        <h2 class="h2textos">Lista de Mascotas</h2>
         <table>
             <thead>
                 <tr>
@@ -335,12 +356,9 @@
                 </tr>
             </thead>
             <tbody id="tablaMascotasBody">
-                <!-- Las filas de la tabla se insertarán aquí -->
             </tbody>
         </table>
     </div>
-
-    <button type="button" id="logoutBtn" style="display: none;" onclick="logout()">Logout</button>
 </body>
 
 </html>
