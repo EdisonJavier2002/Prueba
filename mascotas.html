@@ -92,13 +92,13 @@
 
         // Tu configuración de Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyD73Mp6G2pi_pWS66rvaINg30d-n5ArP9c",
-            authDomain: "mascotascrud.firebaseapp.com",
-            projectId: "mascotascrud",
-            storageBucket: "mascotascrud.appspot.com",
-            messagingSenderId: "1060241153",
-            appId: "1:1060241153:web:84ecde2965957fa39ee500",
-            measurementId: "G-T0EXQLHXFH"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID",
+            measurementId: "YOUR_MEASUREMENT_ID"
         };
 
         // Inicializa Firebase
@@ -115,6 +115,7 @@
                 loginSection.style.display = 'none';
                 mascotaSection.style.display = 'block';
                 logoutBtn.style.display = 'block';
+                getMascotas();
             } else {
                 loginSection.style.display = 'block';
                 mascotaSection.style.display = 'none';
