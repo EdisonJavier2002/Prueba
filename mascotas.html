@@ -10,6 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             padding: 20px;
+            background-image: url(https://p.kindpng.com/picc/s/425-4253422_huellas-de-perro-hd-png-download.png);
         }
 
         form {
@@ -48,11 +49,46 @@
         th {
             background-color: #f2f2f2;
         }
+
+        .menu-container {
+            background-color: #007bff;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .menu-container a {
+            text-decoration: none;
+            color: rgb(0, 0, 0);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .menu-container a:hover {
+            color: rgb(255, 255, 255);
+        }
+
+        .h2textos {
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .h1txt {
+            color: #000000;
+            background-color: #00e5ff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
     </style>
     <script type="module">
         // Importa las funciones que necesitas de los SDKs que necesites
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
 
         // Tu configuración de Firebase
         const firebaseConfig = {
@@ -63,12 +99,46 @@
             messagingSenderId: "1060241153",
             appId: "1:1060241153:web:84ecde2965957fa39ee500",
             measurementId: "G-T0EXQLHXFH"
-
         };
 
         // Inicializa Firebase
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
+
+        // Función para registrarse
+        async function register() {
+            const email = document.getElementById("registerEmail").value;
+            const password = document.getElementById("registerPassword").value;
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                console.log("Usuario registrado:", userCredential.user);
+            } catch (error) {
+                console.error("Error al registrar:", error);
+            }
+        }
+
+        // Función para iniciar sesión
+        async function login() {
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log("Usuario logueado:", userCredential.user);
+            } catch (error) {
+                console.error("Error al iniciar sesión:", error);
+            }
+        }
+
+        // Función para cerrar sesión
+        async function logout() {
+            try {
+                await signOut(auth);
+                console.log("Usuario desconectado");
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+            }
+        }
 
         // Referencia a la colección "mascotas"
         const mascotasCollection = collection(db, "mascotas");
@@ -159,128 +229,79 @@
                 direccion_propietario: document.getElementById('direccion_propietario').value,
                 telefono_contacto: document.getElementById('telefono_contacto').value
             };
-            await createMascota(data);
+            const id = document.getElementById('buscarId').value;
+            if (id) {
+                await updateMascota(id, data);
+            } else {
+                await createMascota(data);
+            }
             document.getElementById('mascotaForm').reset();
         });
 
-        document.getElementById('editarBtn').addEventListener('click', async (e) => {
+        document.getElementById('leerBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            getMascotas();
+        });
+
+        document.getElementById('buscarBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const id = document.getElementById('buscarId').value;
-            const updatedData = {
-                nombre: document.getElementById('nombre').value,
-                especie: document.getElementById('especie').value,
-                raza: document.getElementById('raza').value,
-                edad: document.getElementById('edad').value,
-                peso: document.getElementById('peso').value,
-                fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
-                propietario: document.getElementById('propietario').value,
-                direccion_propietario: document.getElementById('direccion_propietario').value,
-                telefono_contacto: document.getElementById('telefono_contacto').value
-            };
-            await updateMascota(id, updatedData);
-            document.getElementById('mascotaForm').reset();
+            await searchMascotaById(id);
         });
 
-        document.getElementById('borrarBtn').addEventListener('click', async (e) => {
+        document.getElementById('eliminarBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const id = document.getElementById('buscarId').value;
             await deleteMascota(id);
             document.getElementById('mascotaForm').reset();
         });
 
-        document.getElementById('buscarBtn').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('buscarId').value;
-            if (id) {
-                await searchMascotaById(id);
-            } else {
-                console.log("Please enter ID to search");
-            }
-        });
-
-        window.onload = getMascotas;
-
     </script>
 </head>
 
-<body style="background-image: url(https://p.kindpng.com/picc/s/425-4253422_huellas-de-perro-hd-png-download.png);">
-    <style>
-        /* Estilos para el contenedor */
-        .menu-container {
-            background-color: #007bff;
-            padding: 10px; /* Ajusta el espacio alrededor del contenido */
-            border-radius: 10px; /* Añade bordes redondeados al contenedor */
-            margin-bottom: 20px; /* Espacio entre el menú y el contenido siguiente */
-        }
-    
-        /* Estilos para los enlaces */
-        .menu-container a {
-            text-decoration: none; /* Elimina el subrayado predeterminado de los enlaces */
-            color: rgb(0, 0, 0); /* Cambia el color del texto de los enlaces */
-            margin-right: 10px; /* Espacio entre los enlaces */
-            font-weight: bold; /* Hace que el texto de los enlaces sea más grueso */
-        }
-    
-        /* Estilos para los enlaces al pasar el ratón sobre ellos */
-        .menu-container a:hover {
-            color: rgb(255, 255, 255); /* Cambia el color del texto al pasar el ratón sobre los enlaces */
-        }
-        .h2textos{
-            color: #fff; 
-            background-color: #007bff; 
-            padding: 10px; 
-            text-align: center; 
-            border-radius: 5px;
-        }.h1txt{
-            color: #000000; 
-            background-color: #00e5ff; 
-            padding: 10px; 
-            text-align: center; 
-            border-radius: 5px;
-        }
-    </style>
-    
+<body>
     <div class="menu-container">
-        <a href="index.html">INICIO</a>
-        <a href="informacion.html">INFORMACIÓN</a>
-        <a href="acercade.html">ACERCA DE</a>
-        <a href="adrian.html">INFORMACIÓN ADRIAN</a>
-        <a href="edison.html">INFORMACIÓN EDISON</a>
-        <a href="producto.html">PRODUCTO</a>
-        <a href="mascotas.html">MASCOTAS</a>
+        <a href="#" id="registroEnlace">Registro</a>
+        <a href="#" id="loginEnlace">Login</a>
+        <a href="#" id="logoutEnlace">Logout</a>
     </div>
-    
 
-    <h1 class="h1txt">MASCOTAS CRUD</h1>
-    <img style="width: 100%; height: auto;" src="https://colombiavisible.com/wp-content/uploads/2022/08/Portada-hogar-de-paso-1024x312.jpg" alt="">
+    <h1 class="h1txt">Aplicación CRUD de Mascotas con Firebase</h1>
 
-    <!-- Formulario de búsqueda -->
-    <h2 class="h2textos">Buscar Mascota</h2>
-    <form id="buscarForm">
-        <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
-        <button type="submit" id="buscarBtn" style="background-color: rgb(253, 255, 159); border-color:rgb(253, 255, 159) ; border-radius: 40px;">Buscar</button>
+    <h2 class="h2textos">Formulario de Registro</h2>
+    <form id="registroForm">
+        <input type="email" id="registerEmail" placeholder="Email" required>
+        <input type="password" id="registerPassword" placeholder="Contraseña" required>
+        <button type="button" id="registerBtn" onclick="register()">Registrar</button>
     </form>
 
-    <h2 class="h2textos">Gestionar Mascota</h2>
-    <form id="mascotaForm" >
-        <input type="text" id="nombre" placeholder="Nombre" required>
+    <h2 class="h2textos">Formulario de Login</h2>
+    <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Contraseña" required>
+        <button type="button" id="loginBtn" onclick="login()">Login</button>
+    </form>
+
+    <button type="button" id="logoutBtn" onclick="logout()">Logout</button>
+
+    <h2 class="h2textos">Formulario de Mascotas</h2>
+    <form id="mascotaForm">
+        <input type="text" id="buscarId" placeholder="ID de la mascota (solo para actualizar o eliminar)">
+        <input type="text" id="nombre" placeholder="Nombre de la mascota" required>
         <input type="text" id="especie" placeholder="Especie" required>
         <input type="text" id="raza" placeholder="Raza" required>
         <input type="number" id="edad" placeholder="Edad" required>
-        <input type="number" id="peso" placeholder="Peso" required>
+        <input type="number" id="peso" placeholder="Peso (kg)" required>
         <input type="date" id="fecha_nacimiento" placeholder="Fecha de Nacimiento" required>
-        <input type="text" id="propietario" placeholder="Propietario" required>
-        <input type="text" id="direccion_propietario" placeholder="Dirección del Propietario" required>
-        <input type="tel" id="telefono_contacto" placeholder="Teléfono de Contacto" required>
-        <button id="insertarBtn"
-            style="background-color: rgb(0, 255, 81); border-color:rgb(0, 255, 81) ; border-radius: 40px;">Insertar</button>
-        <button id="editarBtn"
-            style="background-color: rgb(46, 133, 255); border-color: rgb(46, 133, 255); border-radius: 40px;">Actualizar</button>
-        <button id="borrarBtn"
-            style="background-color: rgb(255, 52, 52); border-color: rgb(255, 52, 52); border-radius: 40px;">Eliminar</button>
+        <input type="text" id="propietario" placeholder="Nombre del propietario" required>
+        <input type="text" id="direccion_propietario" placeholder="Dirección del propietario" required>
+        <input type="text" id="telefono_contacto" placeholder="Teléfono de contacto" required>
+        <button type="button" id="insertarBtn">Insertar/Actualizar Mascota</button>
+        <button type="button" id="leerBtn">Leer Mascotas</button>
+        <button type="button" id="buscarBtn">Buscar Mascota por ID</button>
+        <button type="button" id="eliminarBtn">Eliminar Mascota</button>
     </form>
 
-    <h2 class="h2textos">Lista de Mascotas</h2>
     <table>
         <thead>
             <tr>
@@ -296,9 +317,10 @@
                 <th>Teléfono de Contacto</th>
             </tr>
         </thead>
-        <tbody id="tablaMascotasBody"></tbody>
+        <tbody id="tablaMascotasBody">
+            <!-- Las filas de la tabla se insertarán aquí -->
+        </tbody>
     </table>
-
 </body>
 
 </html>
