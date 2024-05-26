@@ -6,76 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
     <!-- Agrega la CDN de Firebase Auth -->
-    <script>
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js"></script>
 
-        // Configura Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyD73Mp6G2pi_pWS66rvaINg30d-n5ArP9c",
-            authDomain: "mascotascrud.firebaseapp.com",
-            projectId: "mascotascrud",
-            storageBucket: "mascotascrud.appspot.com",
-            messagingSenderId: "1060241153",
-            appId: "1:1060241153:web:84ecde2965957fa39ee500",
-            measurementId: "G-T0EXQLHXFH"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-
-        // Función para manejar los errores
-        function handleAuthError(error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            switch (errorCode) {
-                case 'auth/user-not-found':
-                    alert('El usuario no existe. Por favor, regístrese primero.');
-                    break;
-                case 'auth/wrong-password':
-                    alert('Contraseña incorrecta. Inténtelo de nuevo.');
-                    break;
-                case 'auth/email-already-in-use':
-                    alert('Este correo electrónico ya está en uso. Por favor, utilice otro.');
-                    break;
-                default:
-                    alert(errorMessage);
-                    break;
-            }
-        }
-
-        // Función para iniciar sesión
-        async function signIn() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            console.log('Email:', email); // Verifica el valor de email en la consola
-            console.log('Password:', password); // Verifica el valor de password en la consola
-            try {
-                await firebase.auth().signInWithEmailAndPassword(email, password);
-                window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después de iniciar sesión
-            } catch (error) {
-                console.error(error);
-                handleAuthError(error); // Maneja los errores de inicio de sesión
-            }
-        }
-
-        // Función para registrar un nuevo usuario
-        async function signUp() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            console.log('Email:', email); // Verifica el valor de email en la consola
-            console.log('Password:', password); // Verifica el valor de password en la consola
-            try {
-                await firebase.auth().createUserWithEmailAndPassword(email, password);
-                window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después del registro
-            } catch (error) {
-                console.error(error);
-                handleAuthError(error); // Maneja los errores de registro
-            }
-        }
-    </script>
-</head>
-
-<body>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -123,12 +56,86 @@
             background-color: #0056b3;
         }
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Configura Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyD73Mp6G2pi_pWS66rvaINg30d-n5ArP9c",
+                authDomain: "mascotascrud.firebaseapp.com",
+                projectId: "mascotascrud",
+                storageBucket: "mascotascrud.appspot.com",
+                messagingSenderId: "1060241153",
+                appId: "1:1060241153:web:84ecde2965957fa39ee500",
+                measurementId: "G-T0EXQLHXFH"
+            };
+
+            firebase.initializeApp(firebaseConfig);
+
+            // Función para manejar los errores
+            function handleAuthError(error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                switch (errorCode) {
+                    case 'auth/user-not-found':
+                        alert('El usuario no existe. Por favor, regístrese primero.');
+                        break;
+                    case 'auth/wrong-password':
+                        alert('Contraseña incorrecta. Inténtelo de nuevo.');
+                        break;
+                    case 'auth/email-already-in-use':
+                        alert('Este correo electrónico ya está en uso. Por favor, utilice otro.');
+                        break;
+                    default:
+                        alert(errorMessage);
+                        break;
+                }
+            }
+
+            // Función para iniciar sesión
+            async function signIn() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                console.log('Email:', email); // Verifica el valor de email en la consola
+                console.log('Password:', password); // Verifica el valor de password en la consola
+                try {
+                    await firebase.auth().signInWithEmailAndPassword(email, password);
+                    window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después de iniciar sesión
+                } catch (error) {
+                    console.error(error);
+                    handleAuthError(error); // Maneja los errores de inicio de sesión
+                }
+            }
+
+            // Función para registrar un nuevo usuario
+            async function signUp() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                console.log('Email:', email); // Verifica el valor de email en la consola
+                console.log('Password:', password); // Verifica el valor de password en la consola
+                try {
+                    await firebase.auth().createUserWithEmailAndPassword(email, password);
+                    window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después del registro
+                } catch (error) {
+                    console.error(error);
+                    handleAuthError(error); // Maneja los errores de registro
+                }
+            }
+
+            // Asigna las funciones a los botones
+            document.getElementById('signInButton').addEventListener('click', signIn);
+            document.getElementById('signUpButton').addEventListener('click', signUp);
+        });
+    </script>
+</head>
+
+<body>
     <div class="container">
         <h1>Iniciar Sesión</h1>
         <input type="email" id="email" placeholder="Correo electrónico">
         <input type="password" id="password" placeholder="Contraseña">
-        <button onclick="signIn()">Iniciar Sesión</button>
-        <button onclick="signUp()">Registrarse</button>
+        <button id="signInButton">Iniciar Sesión</button>
+        <button id="signUpButton">Registrarse</button>
     </div>
 </body>
 
