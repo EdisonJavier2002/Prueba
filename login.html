@@ -47,6 +47,8 @@
         async function signIn() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            console.log('Email:', email); // Verifica el valor de email en la consola
+            console.log('Password:', password); // Verifica el valor de password en la consola
             try {
                 await firebase.auth().signInWithEmailAndPassword(email, password);
                 window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después de iniciar sesión
@@ -60,6 +62,8 @@
         async function signUp() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            console.log('Email:', email); // Verifica el valor de email en la consola
+            console.log('Password:', password); // Verifica el valor de password en la consola
             try {
                 await firebase.auth().createUserWithEmailAndPassword(email, password);
                 window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después del registro
