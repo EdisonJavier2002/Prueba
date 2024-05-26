@@ -129,6 +129,17 @@
             });
         }
 
+        async function searchMascotaById(id) {
+            const mascotaDoc = doc(mascotasCollection, id);
+            const docSnap = await getDoc(mascotaDoc);
+            if (docSnap.exists()) {
+                fillFormWithMascotaData(docSnap.id, docSnap.data());
+            } else {
+                console.log("No such document!");
+                document.getElementById('mascotaForm').reset();
+            }
+        }
+
         function fillFormWithMascotaData(row) {
             const cells = row.getElementsByTagName("td");
             document.getElementById('buscarId').value = row.id;
@@ -194,8 +205,9 @@
                 console.log("Please enter ID to search");
             }
         });
-
-        document.getElementById('limpiarCamposBtn').addEventListener('click', () => {
+        
+        document.getElementById('limpiarBtn').addEventListener('click', (e) => {
+            e.preventDefault();
             document.getElementById('mascotaForm').reset();
         });
 
@@ -267,10 +279,13 @@
     <img style="width: 100%; height: auto;"
         src="https://colombiavisible.com/wp-content/uploads/2022/08/Portada-hogar-de-paso-1024x312.jpg" alt="">
 
+    <!-- Formulario de búsqueda -->
+    <h2 class="h2textos">Limpiar campos</h2>
+    <button type="button" id="limpiarBtn"
+        style="background-color: rgb(253, 255, 159); border-color:rgb(253, 255, 159) ; border-radius: 40px;">Limpiar</button>
+
+
     <h2 class="h2textos">Gestionar Mascota</h2>
-    <button id="limpiarCamposBtn" style="background-color: #ffc107; border-color: #ffc107; border-radius: 40px;">Limpiar
-        Campos</button>
-    <br>
     <form id="mascotaForm">
         <input type="text" id="nombre" placeholder="Nombre" required>
         <input type="text" id="especie" placeholder="Especie" required>
