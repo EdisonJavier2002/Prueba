@@ -205,7 +205,7 @@
                 console.log("Please enter ID to search");
             }
         });
-        
+
         document.getElementById('limpiarBtn').addEventListener('click', (e) => {
             e.preventDefault();
             document.getElementById('mascotaForm').reset();
@@ -280,10 +280,12 @@
         src="https://colombiavisible.com/wp-content/uploads/2022/08/Portada-hogar-de-paso-1024x312.jpg" alt="">
 
     <!-- Formulario de búsqueda -->
-    <h2 class="h2textos">Limpiar campos</h2>
-    <button type="button" id="limpiarBtn"
-        style="background-color: rgb(253, 255, 159); border-color:rgb(253, 255, 159) ; border-radius: 40px;">Limpiar</button>
-
+    <h2 class="h2textos">Buscar Mascota</h2>
+    <form id="buscarForm">
+        <input type="text" id="buscarId" placeholder="ID de la Mascota" required>
+        <button type="submit" id="buscarBtn"
+            style="background-color: rgb(253, 255, 159); border-color:rgb(253, 255, 159) ; border-radius: 40px;">Buscar</button>
+    </form>
 
     <h2 class="h2textos">Gestionar Mascota</h2>
     <form id="mascotaForm">
@@ -302,6 +304,9 @@
             style="background-color: rgb(46, 133, 255); border-color: rgb(46, 133, 255); border-radius: 40px;">Actualizar</button>
         <button id="borrarBtn"
             style="background-color: rgb(255, 52, 52); border-color: rgb(255, 52, 52); border-radius: 40px;">Eliminar</button>
+        <button id="limpiarBtn"
+            style="background-color: rgb(255, 193, 7); border-color: rgb(255, 193, 7); border-radius: 40px;">Limpiar
+            Campos</button>
     </form>
 
     <h2 class="h2textos">Lista de Mascotas</h2>
