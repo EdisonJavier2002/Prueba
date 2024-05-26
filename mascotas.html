@@ -87,7 +87,7 @@
     <script type="module">
         // Importa las funciones que necesitas de los SDKs que necesites
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
 
         // Tu configuración de Firebase
@@ -105,6 +105,22 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        // Verificar el estado de autenticación y ajustar la interfaz
+        onAuthStateChanged(auth, (user) => {
+            const loginSection = document.getElementById('loginSection');
+            const mascotaSection = document.getElementById('mascotaSection');
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (user) {
+                loginSection.style.display = 'none';
+                mascotaSection.style.display = 'block';
+                logoutBtn.style.display = 'block';
+            } else {
+                loginSection.style.display = 'block';
+                mascotaSection.style.display = 'none';
+                logoutBtn.style.display = 'none';
+            }
+        });
 
         // Función para registrarse
         async function register() {
@@ -255,7 +271,6 @@
             await deleteMascota(id);
             document.getElementById('mascotaForm').reset();
         });
-
     </script>
 </head>
 
@@ -268,59 +283,63 @@
 
     <h1 class="h1txt">Aplicación CRUD de Mascotas con Firebase</h1>
 
-    <h2 class="h2textos">Formulario de Registro</h2>
-    <form id="registroForm">
-        <input type="email" id="registerEmail" placeholder="Email" required>
-        <input type="password" id="registerPassword" placeholder="Contraseña" required>
-        <button type="button" id="registerBtn" onclick="register()">Registrar</button>
-    </form>
+    <div id="loginSection">
+        <h2 class="h2textos">Formulario de Registro</h2>
+        <form id="registroForm">
+            <input type="email" id="registerEmail" placeholder="Email" required>
+            <input type="password" id="registerPassword" placeholder="Contraseña" required>
+            <button type="button" id="registerBtn" onclick="register()">Registrar</button>
+        </form>
 
-    <h2 class="h2textos">Formulario de Login</h2>
-    <form id="loginForm">
-        <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Contraseña" required>
-        <button type="button" id="loginBtn" onclick="login()">Login</button>
-    </form>
+        <h2 class="h2textos">Formulario de Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Contraseña" required>
+            <button type="button" id="loginBtn" onclick="login()">Login</button>
+        </form>
+    </div>
 
-    <button type="button" id="logoutBtn" onclick="logout()">Logout</button>
+    <div id="mascotaSection" style="display: none;">
+        <h2 class="h2textos">Formulario de Mascotas</h2>
+        <form id="mascotaForm">
+            <input type="text" id="buscarId" placeholder="ID de la mascota (solo para actualizar o eliminar)">
+            <input type="text" id="nombre" placeholder="Nombre de la mascota" required>
+            <input type="text" id="especie" placeholder="Especie" required>
+            <input type="text" id="raza" placeholder="Raza" required>
+            <input type="number" id="edad" placeholder="Edad" required>
+            <input type="number" id="peso" placeholder="Peso (kg)" required>
+            <input type="date" id="fecha_nacimiento" placeholder="Fecha de Nacimiento" required>
+            <input type="text" id="propietario" placeholder="Nombre del propietario" required>
+            <input type="text" id="direccion_propietario" placeholder="Dirección del propietario" required>
+            <input type="text" id="telefono_contacto" placeholder="Teléfono de contacto" required>
+            <button type="button" id="insertarBtn">Insertar/Actualizar Mascota</button>
+            <button type="button" id="leerBtn">Leer Mascotas</button>
+            <button type="button" id="buscarBtn">Buscar Mascota por ID</button>
+            <button type="button" id="eliminarBtn">Eliminar Mascota</button>
+        </form>
 
-    <h2 class="h2textos">Formulario de Mascotas</h2>
-    <form id="mascotaForm">
-        <input type="text" id="buscarId" placeholder="ID de la mascota (solo para actualizar o eliminar)">
-        <input type="text" id="nombre" placeholder="Nombre de la mascota" required>
-        <input type="text" id="especie" placeholder="Especie" required>
-        <input type="text" id="raza" placeholder="Raza" required>
-        <input type="number" id="edad" placeholder="Edad" required>
-        <input type="number" id="peso" placeholder="Peso (kg)" required>
-        <input type="date" id="fecha_nacimiento" placeholder="Fecha de Nacimiento" required>
-        <input type="text" id="propietario" placeholder="Nombre del propietario" required>
-        <input type="text" id="direccion_propietario" placeholder="Dirección del propietario" required>
-        <input type="text" id="telefono_contacto" placeholder="Teléfono de contacto" required>
-        <button type="button" id="insertarBtn">Insertar/Actualizar Mascota</button>
-        <button type="button" id="leerBtn">Leer Mascotas</button>
-        <button type="button" id="buscarBtn">Buscar Mascota por ID</button>
-        <button type="button" id="eliminarBtn">Eliminar Mascota</button>
-    </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Especie</th>
+                    <th>Raza</th>
+                    <th>Edad</th>
+                    <th>Peso</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Propietario</th>
+                    <th>Dirección del Propietario</th>
+                    <th>Teléfono de Contacto</th>
+                </tr>
+            </thead>
+            <tbody id="tablaMascotasBody">
+                <!-- Las filas de la tabla se insertarán aquí -->
+            </tbody>
+        </table>
+    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Especie</th>
-                <th>Raza</th>
-                <th>Edad</th>
-                <th>Peso</th>
-                <th>Fecha de Nacimiento</th>
-                <th>Propietario</th>
-                <th>Dirección del Propietario</th>
-                <th>Teléfono de Contacto</th>
-            </tr>
-        </thead>
-        <tbody id="tablaMascotasBody">
-            <!-- Las filas de la tabla se insertarán aquí -->
-        </tbody>
-    </table>
+    <button type="button" id="logoutBtn" style="display: none;" onclick="logout()">Logout</button>
 </body>
 
 </html>
