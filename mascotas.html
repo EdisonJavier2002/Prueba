@@ -105,7 +105,7 @@
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
                 const row = `
-                    <tr id="${doc.id}" onclick="fillFormWithMascotaData(this)">
+                    <tr id="${doc.id}">
                         <td>${doc.id}</td>
                         <td>${data.nombre}</td>
                         <td>${data.especie}</td>
@@ -119,6 +119,13 @@
                     </tr>
                 `;
                 tableBody.insertAdjacentHTML('beforeend', row);
+            });
+            // Agregar evento clic a cada fila de la tabla
+            const rows = document.querySelectorAll("#tablaMascotasBody tr");
+            rows.forEach(row => {
+                row.addEventListener("click", () => {
+                    fillFormWithMascotaData(row);
+                });
             });
         }
 
