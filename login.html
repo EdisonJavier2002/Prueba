@@ -70,8 +70,7 @@
             };
 
             // Inicializa Firebase
-            const app = firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
+            firebase.initializeApp(firebaseConfig);
 
             // Función para manejar los errores
             function handleAuthError(error) {
@@ -100,7 +99,7 @@
                 console.log('Email:', email); // Verifica el valor de email en la consola
                 console.log('Password:', password); // Verifica el valor de password en la consola
                 try {
-                    await auth.signInWithEmailAndPassword(email, password);
+                    await firebase.auth().signInWithEmailAndPassword(email, password);
                     window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después de iniciar sesión
                 } catch (error) {
                     console.error(error);
@@ -115,7 +114,7 @@
                 console.log('Email:', email); // Verifica el valor de email en la consola
                 console.log('Password:', password); // Verifica el valor de password en la consola
                 try {
-                    await auth.createUserWithEmailAndPassword(email, password);
+                    await firebase.auth().createUserWithEmailAndPassword(email, password);
                     window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después del registro
                 } catch (error) {
                     console.error(error);
