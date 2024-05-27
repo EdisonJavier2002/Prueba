@@ -1,30 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTC</title>
+    <title>Iniciar Sesión</title>
+    <!-- Agrega la CDN de Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Configura Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyD73Mp6G2pi_pWS66rvaINg30d-n5ArP9c",
+                authDomain: "mascotascrud.firebaseapp.com",
+                projectId: "mascotascrud",
+                storageBucket: "mascotascrud.appspot.com",
+                messagingSenderId: "1060241153",
+                appId: "1:1060241153:web:84ecde2965957fa39ee500",
+                measurementId: "G-T0EXQLHXFH"
+            };
+
+            // Inicializa Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            // Función para manejar los errores
+            function handleAuthError(error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                switch (errorCode) {
+                    case 'auth/user-not-found':
+                        alert('El usuario no existe. Por favor, regístrese primero.');
+                        break;
+                    case 'auth/wrong-password':
+                        alert('Contraseña incorrecta. Inténtelo de nuevo.');
+                        break;
+                    case 'auth/email-already-in-use':
+                        alert('Este correo electrónico ya está en uso. Por favor, utilice otro.');
+                        break;
+                    default:
+                        alert(errorMessage);
+                        break;
+                }
+            }
+
+            // Función para iniciar sesión
+            async function signIn() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                console.log('Email:', email); // Verifica el valor de email en la consola
+                console.log('Password:', password); // Verifica el valor de password en la consola
+                try {
+                    await firebase.auth().signInWithEmailAndPassword(email, password);
+                    window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después de iniciar sesión
+                } catch (error) {
+                    console.error(error);
+                    handleAuthError(error); // Maneja los errores de inicio de sesión
+                }
+            }
+
+            // Función para registrar un nuevo usuario
+            async function signUp() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                console.log('Email:', email); // Verifica el valor de email en la consola
+                console.log('Password:', password); // Verifica el valor de password en la consola
+                try {
+                    await firebase.auth().createUserWithEmailAndPassword(email, password);
+                    window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después del registro
+                } catch (error) {
+                    console.error(error);
+                    handleAuthError(error); // Maneja los errores de registro
+                }
+            }
+
+            // Asigna las funciones a los botones
+            document.getElementById('signInButton').addEventListener('click', signIn);
+            document.getElementById('signUpButton').addEventListener('click', signUp);
+        });
+    </script>
 </head>
+
 <body>
-    <a href="index.html">INICIO</a>
-    &nbsp;&nbsp;
-    <a href="informacion.html">INFORMACIÓN</a>
-    &nbsp;&nbsp;
-    <a href="acercade.html">ACERCA DE</a>
-    &nbsp;&nbsp;
-    <a href="adrian.html">INFORMACIÓN ADRIAN</a>
-    &nbsp;&nbsp;
-    <a href="edison.html">INFORMACIÓN EDISON</a>
-    <br>
-    &nbsp;&nbsp;
-    <a href="producto.html">PRODUCTO</a>
-    <br>
-    &nbsp;&nbsp;
-    <a href="login.html">INICIAR SESION</a>
-    <br>
-    &nbsp;&nbsp;
-    <a href="mascotas.html">MASCOTAS</a>
-    <br>
-    <h1>HOLA MUNDO</h1>
+    <div class="container">
+        <h1>Iniciar Sesión</h1>
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button id="signInButton">Iniciar Sesión</button>
+        <button id="signUpButton">Registrarse</button>
+    </div>
 </body>
 </html>
