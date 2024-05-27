@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,7 +69,9 @@
                 measurementId: "G-T0EXQLHXFH"
             };
 
-            firebase.initializeApp(firebaseConfig);
+            // Inicializa Firebase
+            const app = firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth();
 
             // Función para manejar los errores
             function handleAuthError(error) {
@@ -99,7 +100,7 @@
                 console.log('Email:', email); // Verifica el valor de email en la consola
                 console.log('Password:', password); // Verifica el valor de password en la consola
                 try {
-                    await firebase.auth().signInWithEmailAndPassword(email, password);
+                    await auth.signInWithEmailAndPassword(email, password);
                     window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después de iniciar sesión
                 } catch (error) {
                     console.error(error);
@@ -114,7 +115,7 @@
                 console.log('Email:', email); // Verifica el valor de email en la consola
                 console.log('Password:', password); // Verifica el valor de password en la consola
                 try {
-                    await firebase.auth().createUserWithEmailAndPassword(email, password);
+                    await auth.createUserWithEmailAndPassword(email, password);
                     window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después del registro
                 } catch (error) {
                     console.error(error);
@@ -138,5 +139,4 @@
         <button id="signUpButton">Registrarse</button>
     </div>
 </body>
-
 </html>
