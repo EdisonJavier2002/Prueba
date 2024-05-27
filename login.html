@@ -54,6 +54,14 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        .google-btn {
+            background-color: #db4437;
+        }
+
+        .google-btn:hover {
+            background-color: #c23321;
+        }
     </style>
 
     <script>
@@ -122,9 +130,22 @@
                 }
             }
 
+            // Función para iniciar sesión con Google
+            async function signInWithGoogle() {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                try {
+                    await firebase.auth().signInWithPopup(provider);
+                    window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después de iniciar sesión con Google
+                } catch (error) {
+                    console.error(error);
+                    handleAuthError(error); // Maneja los errores de inicio de sesión con Google
+                }
+            }
+
             // Asigna las funciones a los botones
             document.getElementById('signInButton').addEventListener('click', signIn);
             document.getElementById('signUpButton').addEventListener('click', signUp);
+            document.getElementById('googleSignInButton').addEventListener('click', signInWithGoogle);
         });
     </script>
 </head>
@@ -136,6 +157,7 @@
         <input type="password" id="password" placeholder="Contraseña">
         <button id="signInButton">Iniciar Sesión</button>
         <button id="signUpButton">Registrarse</button>
+        <button id="googleSignInButton" class="google-btn">Iniciar Sesión con Google</button>
     </div>
 </body>
 </html>
