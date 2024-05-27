@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,7 +58,7 @@
     </style>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Configura Firebase
             const firebaseConfig = {
                 apiKey: "AIzaSyD73Mp6G2pi_pWS66rvaINg30d-n5ArP9c",
@@ -114,8 +115,13 @@
                 console.log('Email:', email); // Verifica el valor de email en la consola
                 console.log('Password:', password); // Verifica el valor de password en la consola
                 try {
-                    await firebase.auth().createUserWithEmailAndPassword(email, password);
-                    window.location.href = 'mascotas.html'; // Redirige a la página de mascotas después del registro
+                    // Crea un nuevo usuario con correo electrónico y contraseña
+                    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                    // Accede al usuario creado
+                    const user = userCredential.user;
+                    console.log('Usuario registrado:', user);
+                    // Redirige a la página de mascotas después del registro
+                    window.location.href = 'mascotas.html';
                 } catch (error) {
                     console.error(error);
                     handleAuthError(error); // Maneja los errores de registro
@@ -138,4 +144,5 @@
         <button id="signUpButton">Registrarse</button>
     </div>
 </body>
+
 </html>
